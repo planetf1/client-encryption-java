@@ -3,6 +3,9 @@ name: Bee Agent Demo
   pull_request:
     branches:
       - "**"
+env:
+  OLLAMA_HOST: ollama.cherrybyte.me.uk
+  OLLAMA_PORT: 11434
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,6 +13,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Check connectivity to OLLAMA
+        run: |
+          nc -zv ${OLLAMA_HOST} ${OLLAMA_PORT}
       - name: Do Stuff
         run: |
           echo "Test action completed"

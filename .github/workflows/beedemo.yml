@@ -6,6 +6,7 @@ name: Bee Agent Demo
 env:
   OLLAMA_HOST: ollama.cherrybyte.me.uk
   OLLAMA_PORT: 11434
+  OLLAMA_MODEL: llama3.2
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +17,20 @@ jobs:
       - name: Check connectivity to OLLAMA
         run: |
           nc -zv ${OLLAMA_HOST} ${OLLAMA_PORT}
-      - name: Do Stuff
+      - name: Install dependencies
         run: |
-          echo "Test action completed"
+          pip install ollama
+      - name: Verify LLM
+        shell: python
+        run: |
+          import os
+          from ollama import Client
+          url = 'http://' + os.getenv("OLLAMA_HOST") + ':' + os.getenv("OLLAMA_PORT")
+          client = Client(host=url)
+          response = client.chat(model=os.getenv("OLLAMA_MODEL"), messages=[
+            {
+              'role': 'user',
+              'content': 'Generate a simple python application which prints out a simple message to the screen. Add comments to each line to explain what it does',
+            },
+          ])
+          print(response)

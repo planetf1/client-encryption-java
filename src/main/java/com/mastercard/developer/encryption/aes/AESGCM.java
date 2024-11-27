@@ -20,7 +20,7 @@ public class AESGCM {
 
     public static byte[] decrypt(Key cek, JweObject object) throws GeneralSecurityException {
         byte[] aad = object.getRawHeader().getBytes(StandardCharsets.US_ASCII);
-        GCMParameterSpec gcmSpec = new GCMParameterSpec(128, EncodingUtils.base64Decode(object.getIv()));
+        GCMParameterSpec gcmSpec = new GCMParameterSpec(256, EncodingUtils.base64Decode(object.getIv()));
         byte[] bytes = ByteUtils.concat(EncodingUtils.base64Decode(object.getCipherText()), EncodingUtils.base64Decode(object.getAuthTag()));
         return cipher(cek, gcmSpec, bytes, aad, Cipher.DECRYPT_MODE);
     }

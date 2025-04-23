@@ -1,0 +1,15 @@
+name: Bee Agent Demo
+'on':
+  pull_request:
+    branches:
+      - "**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Do Stuff
+        run: |
+          echo "Test action completed"
